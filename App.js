@@ -1,11 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import SwipeOnsen from './src/components/SwipeOnsen';
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>温泉に行きたいぞ！！！</Text>
+        <View style={{height: 300, justifyContent: 'center'}}>
+          <Text>温泉に行きたいぞ！！！</Text>
+        </View>
+        <SwipeOnsen/>
       </View>
     );
   }
