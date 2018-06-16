@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
+const async = require('async')
 const axios = require('axios')
 const cloudinary = require('cloudinary')
 
@@ -11,14 +12,18 @@ cloudinary.config({
 });
 
 var param = {
-  "img-art": "https://s3.amazonaws.com/hiroga/onsen-tsgen/plimg.png",
-  "ts-art": "https://s3.amazonaws.com/hiroga/onsen-tsgen/tshirts.png",
-  "img-llc": "https://s3.amazonaws.com/hiroga/onsen-tsgen/plimg.png",
-  "ts-llc": "https://s3.amazonaws.com/hiroga/onsen-tsgen/tshirts.png",
+  "title": "",
+  "imgArt": "https://s3.amazonaws.com/hiroga/onsen-tsgen/plimg.png",
+  "tsArt": "https://s3.amazonaws.com/hiroga/onsen-tsgen/tshirts.png",
+  "imgLlc": "https://s3.amazonaws.com/hiroga/onsen-tsgen/plimg.png",
+  "tsLlc": "https://s3.amazonaws.com/hiroga/onsen-tsgen/tshirts.png",
 }
 
-var token = 'BQA0FNTzpRiauxfrTXLpmNDpBZUPdveJBhLlWO-F7fhQ4LVAxHebPZd70nHWTwbVjdmawdN6M0VOwb43OJ8NeRyc3A6A8soU4RSt_iSVhmEEreWA8BqPySGcI_d4lfL9oLCSMiiuwWxzVoZ7ZxVeTta2L3YAPG2WdXI'
+var token = 'BQD42n36UQ6_3vBeEh4YyKE1EERFoBqGv-4ra55KcnEgxKmcHZXqb3xkhSTRhCKW4B3I3iNQsTCHDq961LXtamn37A2qQr9EAKPhCHbaDLZvQAa8R5xG20GzLKtq_skz9gqPHfXgUlLbjm-1d8KUSFP4_lHgkywplSE'
 const AUTH_TOKEN = "Bearer " + token;
+
+var imgArt = "";
+var imgTs = "";
 
 const tsgen = (req, res) => {
   const instance = axios.create({
@@ -29,29 +34,83 @@ const tsgen = (req, res) => {
       ContentType: 'application/json'
     }
   });
-  instance.get('users/spotify/playlists/' + req.query.pl + '/tracks?market=JP')
+  instance.get('users/spotify/playlists/' + req.query.pl + '/?market=JP')
     .then(function (response) {
       console.log(response);
-      console.log(response.data.items);
+      console.log(response.data.name);
 
-      const trackAry = response.data.items
+      const calls = []
+      const trackAry = response.data.tracks.items
       const artAry = []
+
       for (let i in trackAry) {
-        console.log(trackAry[i].track.album.images[0])
-        artAry.push(trackAry[i].track.album.images[0].url)
+        if (i in [0, 1, 2, trackAry.length - 3, trackAry.length - 2, trackAry.length - 1]) {
+          calls.push(function (callback) {
+            cloudinary.v2.uploader.upload(trackAry[i].track.album.images[0].url,
+              function (err, result) {
+                if (err) {
+                  callback(err)
+                } else {
+                  callback(null, result)
+                }
+              });
+          })
+        }
       }
-      console.log(artAry)
+      calls.push(function (callback) {
+        cloudinary.v2.uploader.upload('https://scannables.scdn.co/uri/plain/jpeg/FFFFFF/black/1280/spotify:user:spotify:playlist:' + req.query.pl,
+          function (err, result) {
+            if (err) {
+              callback(err)
+            } else {
+              callback(null, result)
+            }
+          });
+      })
 
-      const publicIdAry = []
+      var privateIdAry = []
+      async.parallel(calls, function (err, result) {
+        if (err) {
+          console.log(err);
+          return console.log(err);
+        }
+        for (let el of result) { privateIdAry.push(el.public_id) }
+        console.log(privateIdAry)
 
+        const pre = 'http://res.cloudinary.com/hdeoovqgo/image/upload/'
+        const art1 = 'l_' + privateIdAry[0] + ',w_420,h_420,g_north_west/'
+        const art2 = 'l_' + privateIdAry[1] + ',w_420,h_420,g_north_west,x_420/'
+        const art3 = 'l_' + privateIdAry[2] + ',w_420,h_420,g_north_west,x_840/'
+        const art4 = 'l_' + privateIdAry[3] + ',w_420,h_420,g_north_west,y_420/'
+        const art5 = 'l_' + privateIdAry[4] + ',w_420,h_420,g_north_west,x_420,y_420/'
+        const art6 = 'l_' + privateIdAry[5] + ',w_420,h_420,g_north_west,x_840,y_420/'
+        const title = 'l_text:Sawarabi%20Mincho_160_center:' + response.data.name + ',y_262/'
+        const qr = 'l_' + privateIdAry[6] + ',w_1260,g_south/'
+        const suf = 'template.png'
+        const url = pre + art1 + art2 + art3 + art4 + art5 + art6 + title + qr + suf
 
+        console.log(url)
+        cloudinary.v2.uploader.upload(url,
+          function (error, result) {
+            imgArt = result.public_id
+            cloudinary.v2.uploader.upload('http://res.cloudinary.com/hdeoovqgo/image/upload/l_' + imgArt + ',w_600/ts.png',
+              function (error, result) {
+                tsArt = result.public_id
+                res.type('json')
+                res.json({
+                  "title": response.data.name,
+                  "imgArt": imgArt,
+                  "tsArt": tsArt,
+                  "imgLlc": "https://s3.amazonaws.com/hiroga/onsen-tsgen/plimg.png",
+                  "tsLlc": "https://s3.amazonaws.com/hiroga/onsen-tsgen/tshirts.png",
+                })
+              });
+          });
+      });
     })
     .catch(function (error) {
       console.log(error);
     });
-
-  res.type('json')
-  res.json(param)
 }
 
 express()
