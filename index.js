@@ -99,8 +99,8 @@ const tsgen = (req, res) => {
                 res.type('json')
                 res.json({
                   "title": response.data.name,
-                  "imgArt": imgArt,
-                  "tsArt": tsArt,
+                  "imgArt": 'http://res.cloudinary.com/hdeoovqgo/image/upload/' + imgArt + '.png',
+                  "tsArt": 'http://res.cloudinary.com/hdeoovqgo/image/upload/' + tsArt + '.png',
                   "imgLlc": "https://s3.amazonaws.com/hiroga/onsen-tsgen/plimg.png",
                   "tsLlc": "https://s3.amazonaws.com/hiroga/onsen-tsgen/tshirts.png",
                 })
