@@ -13,8 +13,8 @@ const suzuriClient = axios.create({
   baseURL: 'https://suzuri.jp/api/v1',
   timeout: 1000,
   headers: {
-  	Authorization: SUZURI_AUTH,
-  	ContentType: 'application/json'
+    Authorization: SUZURI_AUTH,
+    ContentType: 'application/json'
   }
 });
 
@@ -31,7 +31,7 @@ const spotifyClient = axios.create({
 // for our api instance
 const apiClient = axios.create({
   baseURL: 'https://onsen-tsgen.herokuapp.com',
-  timeout: 1000
+  timeout: 20000
 });
 
 export {suzuriClient, spotifyClient, apiClient};

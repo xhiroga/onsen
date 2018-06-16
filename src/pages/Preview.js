@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Alert } from 'react-native';
 import { Content, Button, Text } from 'native-base';
 import styled from 'styled-components';
 import { suzuriClient } from '../../utilities/apiClient';
@@ -13,24 +13,25 @@ const Tshirt = styled(Image)`
 export default class Preview extends Component {
   constructor(props){
     super(props);
-    console.log(props.shirtData);
     this.state = { isArtbord: true };
   }
 
   // 商品を入稿する
-  registerItem = ({ shirtData }) => {
-    console.log(shirtData);
+  registerItem = () => {
+    // TODO: 入稿できるが400Errorがかえってくる
+    const { shirtData } = this.props;
     suzuriClient.post("/materials", {
-      texture: shirtData['img-art'],
-      title: "hogemaru",
+      texture: shirtData.imgArt,
+      title: shirtData.title,
       products : [{
         itemId : 1,
         published : true,
         resizeMode : "contain"
       }]
     })
-    .then(res => console.log('Registered'))
+    .then(res => console.log(res))
     .catch(err => {
+      console.log(err.request);
       Alert.alert(
        'Error',
        'Cannot register item',
@@ -44,15 +45,14 @@ export default class Preview extends Component {
     })
   }
 
-  // render = ({ shirtData }) => (
   render() {
     const { shirtData } = this.props;
     return (
       <View>
         {
           this.state.isArtbord
-          ? <Tshirt source={{ uri: shirtData['img-art'] }} />
-          : <Tshirt source={{ uri: shirtData['img-llc'] }} />
+          ? <Tshirt source={{ uri: shirtData.imgArt }} />
+          : <Tshirt source={{ uri: shirtData.imgLlc }} />
         }
         <Button onPress={() => this.setState({ isArtbord: !this.state.isArtbord })}>
           <Text>歌詞</Text>

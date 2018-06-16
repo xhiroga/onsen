@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Image,
   View,
+  ScrollView,
   Alert
 } from 'react-native';
 import { Button, Text } from 'native-base';
@@ -95,7 +96,7 @@ export default class TshirtsList extends Component {
 
   render(){
     return (
-      <View>
+      <ScrollView>
       {this.state.productsList.map(product => (
         <View
           key={product.id}
@@ -110,7 +111,7 @@ export default class TshirtsList extends Component {
       <Button onPress={() => Actions.SelectPlayList()}>
         <Text>プレイリストを選択</Text>
       </Button>
-      </View>
+    </ScrollView>
     );
   }
 }
