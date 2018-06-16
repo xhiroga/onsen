@@ -2,30 +2,6 @@ import React, { Component } from 'react';
 import { UIManager, LayoutAnimation, Alert, View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
-UIManager.setLayoutAnimationEnabledExperimental &&
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-
-type State = {
-  hasLoggedInOnce: boolean,
-  accessToken: ?string,
-  accessTokenExpirationDate: ?string,
-  refreshToken: ?string
-};
-
-const config = {
-  issuer: 'https://demo.identityserver.io',
-  clientId: 'native.code',
-  redirectUrl: 'io.identityserver.demo:/oauthredirect',
-  additionalParameters: {},
-  scopes: ['openid', 'profile', 'email', 'offline_access']
-
-  // serviceConfiguration: {
-  //   authorizationEndpoint: 'https://demo.identityserver.io/connect/authorize',
-  //   tokenEndpoint: 'https://demo.identityserver.io/connect/token',
-  //   revocationEndpoint: 'https://demo.identityserver.io/connect/revoke'
-  // }
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
