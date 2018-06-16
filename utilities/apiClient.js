@@ -1,8 +1,8 @@
 import axios from "axios";
+import { SUZURI_TOKEN } from "../config/env";
 
 // for suzuri api
-const TOKEN = "";
-const SUZURI_AUTH = "Bearer " + TOKEN;
+const SUZURI_AUTH = "Bearer " + SUZURI_TOKEN;
 const userId = 212030;
 
 const suzuriClient = axios.create({
