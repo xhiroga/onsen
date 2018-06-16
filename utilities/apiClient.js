@@ -28,7 +28,6 @@ const spotifyClient = axios.create({
   }
 });
 
-
 // for our api instance
 const apiClient = axios.create({
   baseURL: 'https://onsen-tsgen.herokuapp.com',
