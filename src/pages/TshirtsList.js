@@ -4,9 +4,10 @@ import {
   StyleSheet,
   Image,
   View,
-  Text,
   Alert
 } from 'react-native';
+import { Button, Text } from 'native-base';
+import { Actions } from 'react-native-router-flux';
 
 import { suzuriClient } from '../../utilities/apiClient';
 
@@ -106,6 +107,9 @@ export default class TshirtsList extends Component {
           <Text>{product.title}</Text>
         </View>
       ))}
+      <Button onPress={() => Actions.SelectPlayList()}>
+        <Text>プレイリストを選択</Text>
+      </Button>
       </View>
     );
   }

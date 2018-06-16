@@ -6,6 +6,7 @@ import {
   Alert,
   TouchableHighlight
 } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
 import { spotifyClient, apiClient } from '../../utilities/apiClient';
 
@@ -78,8 +79,12 @@ export default class TshirtsList extends Component {
     apiClient.get("/tsgen?pl=" + playListId)
     .then(
       res => {
-        console.log(res);
-      })
+        // success
+        console.log("success fetch playlist list");
+        const payload = res.data;
+        Actions.Preview({ shirtData: payload });
+      }
+    )
     .catch(
       err => {
         console.log(err);

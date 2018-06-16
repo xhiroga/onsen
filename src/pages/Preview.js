@@ -1,40 +1,28 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Image } from 'react-native';
-import { Content, Button, Text, Spinner } from 'native-base';
+import { Content, Button, Text } from 'native-base';
 import styled from 'styled-components';
 import { suzuriClient } from '../../utilities/apiClient';
 
 const Tshirt = styled(Image)`
   margin-top: 50px;
-  max-width: 250px;
-  max-height: 300px;
+  width: 250px;
+  height: 300px;
 `;
 
 export default class Preview extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      isLoad: false,
-      texture: "",
-      title: ""
-    };
+    console.log(props.shirtData);
+    this.state = { isArtbord: true };
   }
 
-  componentDidMount() {
-    this.setState({ isLoad: true })
-    // NOTE: Dummy data
-    this.setState({
-      texture: 'https://i.gyazo.com/fd0e38b0336f03886a90135ce322ed13.png',
-      title: '俺の夏2018'
-    })
-    this.setState({ isLoad: false })
-  }
-
-  registerItem = () => {
-    const { texture, title } = this.state;
+  // 商品を入稿する
+  registerItem = ({ shirtData }) => {
+    console.log(shirtData);
     suzuriClient.post("/materials", {
-      texture,
-      title,
+      texture: shirtData['img-art'],
+      title: "hogemaru",
       products : [{
         itemId : 1,
         published : true,
@@ -56,31 +44,27 @@ export default class Preview extends Component {
     })
   }
 
+  // render = ({ shirtData }) => (
   render() {
+    const { shirtData } = this.props;
     return (
       <View>
-        <Content>
-          {this.state.isLoad
-            ?
-              <Spinner />
-            :
-              <View>
-                <Tshirt
-                  source={require('../../img/Tshirt.png')}
-                />
-                <Button>
-                  <Text>歌詞</Text>
-                </Button>
-                <Button>
-                  <Text>アートワーク</Text>
-                </Button>
-                <Button onPress={() => this.registerItem()}>
-                  <Text>送信</Text>
-                </Button>
-              </View>
-          }
-        </Content>
+        {
+          this.state.isArtbord
+          ? <Tshirt source={{ uri: shirtData['img-art'] }} />
+          : <Tshirt source={{ uri: shirtData['img-llc'] }} />
+        }
+        <Button onPress={() => this.setState({ isArtbord: !this.state.isArtbord })}>
+          <Text>歌詞</Text>
+        </Button>
+        <Button onPress={() => this.setState({ isArtbord: !this.state.isArtbord })}>
+          <Text>アートワーク</Text>
+        </Button>
+        <Button onPress={() => this.registerItem()}>
+          <Text>送信</Text>
+        </Button>
       </View>
-    );
+    )
   }
+
 }
