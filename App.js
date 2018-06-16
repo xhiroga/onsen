@@ -2,12 +2,18 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import SwipeOnsen from './src/components/SwipeOnsen';
 import { Preview, TshirtsList, SelectPlayList  } from './src/pages';
+import { Scene, Router } from 'react-native-router-flux';
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-      </View>
+      <Router style={styles.container}>
+        <Scene key="root">
+          <Scene key="TshirtsList" component={TshirtsList} initial/>
+          <Scene key="SelectPlayList" component={SelectPlayList} />
+          <Scene key="Preview" component={Preview} />
+        </Scene>
+      </Router>
     );
   }
 }

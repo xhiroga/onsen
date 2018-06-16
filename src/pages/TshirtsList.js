@@ -4,9 +4,11 @@ import {
   StyleSheet,
   Image,
   View,
-  Text,
+  ScrollView,
   Alert
 } from 'react-native';
+import { Button, Text } from 'native-base';
+import { Actions } from 'react-native-router-flux';
 
 import { suzuriClient } from '../../utilities/apiClient';
 
@@ -94,7 +96,7 @@ export default class TshirtsList extends Component {
 
   render(){
     return (
-      <View>
+      <ScrollView>
       {this.state.productsList.map(product => (
         <View
           key={product.id}
@@ -106,7 +108,10 @@ export default class TshirtsList extends Component {
           <Text>{product.title}</Text>
         </View>
       ))}
-      </View>
+      <Button onPress={() => Actions.SelectPlayList()}>
+        <Text>プレイリストを選択</Text>
+      </Button>
+    </ScrollView>
     );
   }
 }
