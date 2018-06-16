@@ -10,10 +10,19 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#15192d'
   },
+  circle: {
+    width:264,
+    height:266,
+    marginBottom:60
+  },
+  message: {
+    width:230,
+    height:69
+  },
   loginScreenButton:{
     marginRight:40,
     marginLeft:40,
-    marginTop:45,
+    marginTop:50,
     paddingTop:22,
     paddingBottom:21,
     backgroundColor:'#1b1f36',
@@ -26,7 +35,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   toc: {
-    marginTop: 26,
+    marginTop: 50,
     textDecorationLine: 'underline',
     color: '#fff'
   }
@@ -36,8 +45,8 @@ export default class Login extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image style={{width:264, height:266, marginBottom:54}} source={require('../../img/top_hero.png')} />
-        <Image style={{width:230,height:69}} source={require('../../img/top_text.png')} />
+        <Image style={styles.circle} source={require('../../img/top_hero.png')} />
+        <Image style={styles.message} source={require('../../img/top_text.png')} />
         <TouchableOpacity
             style={styles.loginScreenButton}
             onPress={() => Actions.TshirtsList()}>
