@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { UIManager, LayoutAnimation, Alert, View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { UIManager, LayoutAnimation, Alert, View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 const styles = StyleSheet.create({
@@ -7,26 +7,28 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'column',
+    backgroundColor: '#15192d'
   },
   loginScreenButton:{
-    flex: 1,
     marginRight:40,
     marginLeft:40,
-    marginTop:10,
-    paddingTop:10,
-    paddingBottom:10,
-    backgroundColor:'#84bd00',
-    borderRadius:10,
-    borderWidth: 1,
-    borderColor: '#fff'
+    marginTop:45,
+    paddingTop:22,
+    paddingBottom:21,
+    backgroundColor:'#1b1f36',
+    width: '100%',
   },
   loginText:{
     color:'#fff',
     textAlign:'center',
     fontWeight: 'bold',
-    paddingLeft : 10,
-    paddingRight : 10
+    width: '100%',
+  },
+  toc: {
+    marginTop: 26,
+    textDecorationLine: 'underline',
+    color: '#fff'
   }
 });
 
@@ -34,11 +36,16 @@ export default class Login extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Image style={{width:264, height:266, marginBottom:54}} source={require('../../img/top_hero.png')} />
+        <Image style={{width:230,height:69}} source={require('../../img/top_text.png')} />
         <TouchableOpacity
             style={styles.loginScreenButton}
             onPress={() => Actions.TshirtsList()}>
-            <Text style={styles.loginText}>Log In with Spotify</Text>
+            <Text style={styles.loginText}>Spotifyでログイン</Text>
         </TouchableOpacity>
+        <View>
+         <Text style={styles.toc}>利用規約</Text>
+        </View>
       </View>
     );
   }
