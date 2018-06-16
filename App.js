@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import SwipeOnsen from './src/components/SwipeOnsen';
-import { Preview, TshirtsList } from './src/pages';
+import { Preview, TshirtsList, SelectPlayList  } from './src/pages';
 
 export default class App extends React.Component {
   render() {
