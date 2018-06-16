@@ -28,4 +28,11 @@ const spotifyClient = axios.create({
   }
 });
 
-export {suzuriClient, spotifyClient};
+
+// for our api instance
+const apiClient = axios.create({
+  baseURL: 'https://onsen-tsgen.herokuapp.com',
+  timeout: 1000
+});
+
+export {suzuriClient, spotifyClient, apiClient};

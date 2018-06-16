@@ -3,10 +3,11 @@ import {
   Image,
   View,
   Text,
-  Alert
+  Alert,
+  TouchableHighlight
 } from 'react-native';
 
-import { spotifyClient } from '../../utilities/apiClient';
+import { spotifyClient, apiClient } from '../../utilities/apiClient';
 
 export default class TshirtsList extends Component {
   constructor() {
@@ -54,8 +55,8 @@ export default class TshirtsList extends Component {
       }
     )
     .catch(err => {
+
       // fail
-      console.log(err.request);
 
       Alert.alert(
             'Error',
@@ -73,19 +74,36 @@ export default class TshirtsList extends Component {
     })
   }
 
+  onPress(playListId) {
+    apiClient.get("/tsgen?pl=" + playListId)
+    .then(
+      res => {
+        console.log(res);
+      })
+    .catch(
+      err => {
+        console.log(err);
+      })
+  }
+
   render(){
     return (
       <View>
       {this.state.playLists.map(playList => (
-        <View
+        <TouchableHighlight
           key={playList.id}
+          onPress={() => {
+            this.onPress(playList.id);
+          }}
         >
+        <View>
           <Image
             style={{width: 200, height: 200}}
             source={{uri: playList.images[0].url}}
           />
           <Text>{playList.owner.display_name}</Text>
         </View>
+        </TouchableHighlight>
       ))}
       </View>
     );
