@@ -22,8 +22,8 @@ export default class TshirtsList extends Component {
       productsList: [],
       productsErrors: "",
       isOpenModal: false,
-      modalTshirtUrl: "",
-      modalTshirtTitle: ""
+      modalTshirtUrl: "test",
+      modalTshirtTitle: "test"
     }
   }
 
@@ -82,31 +82,64 @@ export default class TshirtsList extends Component {
     })
   }
 
-  onPressShirt(url) {
+  onPressShirt(e, product) {
+    console.log(product);
     this.setState({
       isOpenModal: !this.state.isOpenModal,
-      modalTshirtUrl: url
+      modalTshirtUrl: product.sampleImageUrl.replace(/jpg/g, "png"),
+      modalTshirtTitle: product.title
     });
+  }
+
+  onPressModal() {
+    this.setState({
+      isOpenModal: !this.state.isOpenModal
+    });
+  }
+
+  renderMordal() {
+    return (
+      <TouchableHighlight
+        onPress={() => this.onPressModal()}
+      >
+        <View
+          style={{alignItems: "center", position: "relative"}}
+        >
+          <Image
+            style={{width: 230, height: 230, position: "absolute", top: -130}}
+            source={require('../../img/shirts_bg.png')}
+          />
+          {this.state.modalTshirtUrl != "test"
+            && <Image style={{width: 230, height: 230, position: "absolute", top: -130}} source={{uri: this.state.modalTshirtUrl.replace(/jpg/g, "png")}} />
+          }
+          <Text style={{fontSize: 30, position: "absolute", color: "#fff", top: 130}}>
+          {this.state.modalTshirtTitle}
+          </Text>
+        </View>
+      </TouchableHighlight>
+    );
   }
 
   render(){
     return (
       <View style={{position: "relative"}}>
         <ScrollView style={{backgroundColor: "#15192D"}}>
-            {this.state.productsList.map((product, index) => (
-              <View styles={{flexDirection: 'row', flex: 1}} key={index}>
-                <TouchableHighlight
-                  key={product.id}
-                  style={{alignItems: 'center'}}
-                  onPress={(product) => this.onPressShirt(product.sampleImageUrl.replace("jpg", "png"))}
-                >
-                  <Image
-                    style={{width: 200, height: 200}}
-                    source={{uri: product.sampleImageUrl.replace("jpg", "png")}}
-                  />
-                </TouchableHighlight>
-              </View>
-            ))}
+            {this.state.productsList.map((product, index) => {
+              return (
+                <View styles={{flexDirection: 'row', flex: 1}} key={index}>
+                  <TouchableHighlight
+                    key={product.id}
+                    style={{alignItems: 'center'}}
+                    onPress={(e) => this.onPressShirt(e, product)}
+                  >
+                    <Image
+                      style={{width: 200, height: 200}}
+                      source={{uri: product.sampleImageUrl.replace(/jpg/g, "png")}}
+                    />
+                  </TouchableHighlight>
+                </View>
+              );
+            })}
         </ScrollView>
         <Button onPress={() => Actions.SelectPlayList()} style={{position: "absolute", bottom: 50, right: 40}}>
           <Image
@@ -119,7 +152,7 @@ export default class TshirtsList extends Component {
           isVisible={this.state.isOpenModal}
           style={{alignItems: "center"}}
         >
-          <Text>{"hoge"}</Text>
+          {this.renderMordal()}
         </Modal>
       </View>
     );
