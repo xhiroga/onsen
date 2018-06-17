@@ -38,7 +38,7 @@ export default class Preview extends Component {
     })
     .catch(err => {
       console.log(err.request);
-      Actions.reset('roor').popTo('TshirtsList');
+      Actions.popTo('TshirtsList');
     })
   }
 
