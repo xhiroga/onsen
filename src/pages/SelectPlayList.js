@@ -4,10 +4,14 @@ import {
   View,
   Text,
   Alert,
-  TouchableHighlight
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity
 } from 'react-native';
+import { Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
-
+import styled from 'styled-components';
+import Carousel from 'react-native-snap-carousel';
 import { spotifyClient, apiClient } from '../../utilities/apiClient';
 
 export default class TshirtsList extends Component {
@@ -76,6 +80,8 @@ export default class TshirtsList extends Component {
   }
 
   onPress(playListId) {
+    console.log("AAAAAAAA");
+    console.log(playListId);
     apiClient.get("/tsgen?pl=" + playListId)
     .then(
       res => {
@@ -84,33 +90,79 @@ export default class TshirtsList extends Component {
         const payload = res.data;
         Actions.Preview({ shirtData: payload });
       }
+    ).catch(
+      err => { console.log(err) }
     )
-    .catch(
-      err => {
-        console.log(err);
-      })
   }
+
+   renderItem = ({ item }) => (
+     <ItemContainer
+       key={item.id}
+       onPress={() => {this.onPress(item.id)}}
+      >
+       <MusicImage source={{uri: item.images[0].url}} />
+       <WhiteText>{item.name}</WhiteText>
+     </ItemContainer>
+   );
 
   render(){
     return (
-      <View>
-      {this.state.playLists.map(playList => (
-        <TouchableHighlight
-          key={playList.id}
-          onPress={() => {
-            this.onPress(playList.id);
-          }}
-        >
-        <View>
-          <Image
-            style={{width: 200, height: 200}}
-            source={{uri: playList.images[0].url}}
-          />
-          <Text>{playList.owner.display_name}</Text>
+      <Container>
+        {/* <BGImage
+          source={require('../../img/shirts_bg.png')}
+        /> */}
+        <Carousel
+          data={this.state.playLists}
+          renderItem={this.renderItem}
+          itemWidth={Dimensions.get("window").width * 0.85}
+          sliderWidth={Dimensions.get("window").width}
+          slideStyle={{ flex: 1 }}
+          layout={'stack'}
+          loop
+        />
+        <View style={{ flex: 1 }}>
+          <StyledButton rounded>
+            <WhiteText>決定</WhiteText>
+          </StyledButton>
         </View>
-        </TouchableHighlight>
-      ))}
-      </View>
+      </Container>
     );
   }
 }
+
+const Container = styled(View)`
+  height: 812px;
+  width: 375px;
+  background-color: #15192D;
+`
+const ItemContainer = styled(TouchableOpacity)`
+  margin: 200px auto;
+  margin-left: 40px;
+`
+const MusicImage = styled(Image)`
+  width: 250px;
+  height: 250px;
+`
+const StyledButton = styled(Button)`
+  width: 300px;
+  margin: 50px auto 0;
+  background-color: #DA0023;
+`
+const BGImage = styled(Image)`
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+`
+const WhiteText = styled(Text)`
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  margin: 25px auto 0;
+  padding: 15px 30px;
+  background-color: #DA0023;
+  border-radius: 50px;
+`
+
+const styles = StyleSheet.create({
+  carousel: { flex: 1 }
+});
