@@ -112,7 +112,7 @@ export default class TshirtsList extends Component {
           {this.state.modalTshirtUrl != "test"
             && <Image style={{width: 230, height: 230, position: "absolute", top: -130}} source={{uri: this.state.modalTshirtUrl.replace(/jpg/g, "png")}} />
           }
-          <Text style={{fontSize: 30, position: "absolute", color: "#fff", top: 130}}>
+          <Text style={{fontSize: 25, position: "absolute", color: "#fff", top: 130}}>
           {this.state.modalTshirtTitle}
           </Text>
         </View>
