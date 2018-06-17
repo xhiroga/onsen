@@ -83,6 +83,7 @@ export default class TshirtsList extends Component {
   }
 
   onPressShirt(e, product) {
+    console.log(product);
     this.setState({
       isOpenModal: !this.state.isOpenModal,
       modalTshirtUrl: product.sampleImageUrl.replace(/jpg/g, "png"),
@@ -112,7 +113,7 @@ export default class TshirtsList extends Component {
             && <Image style={{width: 230, height: 230, position: "absolute", top: -130}} source={{uri: this.state.modalTshirtUrl.replace(/jpg/g, "png")}} />
           }
           <Text style={{fontSize: 30, position: "absolute", color: "#fff", top: 130}}>
-          {"俺の夏2018"}
+          {this.state.modalTshirtTitle}
           </Text>
         </View>
       </TouchableHighlight>
