@@ -1,15 +1,20 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Image, Alert, Dimensions } from 'react-native';
+import { View, Image, Alert, Dimensions, Linking } from 'react-native';
 import { Content, Button, Text } from 'native-base';
 import styled from 'styled-components';
 import { Actions } from 'react-native-router-flux';
 import { suzuriClient } from '../../utilities/apiClient';
+import Modal from 'react-native-modal';
 
 export default class Preview extends Component {
   constructor(props){
     super(props);
     console.log(props.shirtData);
-    this.state = { isArtbord: true };
+    this.state = {
+      isArtbord: true,
+      isOpenModal: false,
+      modalTshirtUrl: ""
+    };
   }
 
   // 商品を入稿する
@@ -25,7 +30,12 @@ export default class Preview extends Component {
         resizeMode : "contain"
       }]
     })
-    .then(res => console.log(res))
+    .then(res => {
+      this.setState({
+        isOpenModal: !this.state.isOpenModal,
+        modalTshirtUrl: res.products.url
+      });
+    })
     .catch(err => {
       console.log(err.request);
       Alert.alert(
@@ -43,11 +53,12 @@ export default class Preview extends Component {
 
   render() {
     const { shirtData } = this.props;
+    const { isArtbord, isOpenModal } = this.state;
     return (
       <Container>
         <WhiteText style={{ fontSize: 20 }}>「{shirtData.title}」Tシャツ</WhiteText>
         {
-          this.state.isArtbord
+          isArtbord
           ? <Tshirt source={{ uri: shirtData.tsArt }} />
           : <Tshirt source={{ uri: shirtData.tsLlc }} />
         }
@@ -59,6 +70,14 @@ export default class Preview extends Component {
             <WhiteText style={{ fontSize: 14 }}>今回はやめておく</WhiteText>
           </GhostButton>
         </ButtonWrapper>
+        <Modal
+          isVisible={isOpenModal}
+          style={{alignItems: "center"}}
+        >
+          <StyledButton onPress={() => Linking.openURL(modalTshirtUrl)}>
+            <WhiteText>購入ページに飛ぶ</WhiteText>
+          </StyledButton>
+        </Modal>
       </Container>
     )
   }
