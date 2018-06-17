@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import SwipeOnsen from './src/components/SwipeOnsen';
-import { Preview, TshirtsList, SelectPlayList  } from './src/pages';
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import TopNavBar from './src/components/TopNavBar';
+import { Login, Preview, TshirtsList, SelectPlayList  } from './src/pages';
 import { Scene, Router } from 'react-native-router-flux';
 
 export default class App extends React.Component {
@@ -9,7 +9,8 @@ export default class App extends React.Component {
     return (
       <Router style={styles.container}>
         <Scene key="root">
-          <Scene key="TshirtsList" component={TshirtsList} initial/>
+          <Scene key="Login" component={Login} navBar={TopNavBar} initial/>
+          <Scene key="TshirtsList" component={TshirtsList} />
           <Scene key="SelectPlayList" component={SelectPlayList} />
           <Scene key="Preview" component={Preview} />
         </Scene>

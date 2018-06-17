@@ -21,6 +21,7 @@ export default class TshirtsList extends Component {
       playLists: [],
       playListsErrors: "",
       isLoad: false
+      isOpenModal: false
     }
   }
 
