@@ -19,7 +19,8 @@ export default class TshirtsList extends Component {
     super();
     this.state = {
       playLists: [],
-      playListsErrors: ""
+      playListsErrors: "",
+      isLoad: false
     }
   }
 
@@ -80,14 +81,14 @@ export default class TshirtsList extends Component {
   }
 
   onPress(playListId) {
-    console.log("AAAAAAAA");
-    console.log(playListId);
+    this.setState({ isLoad: true })
     apiClient.get("/tsgen?pl=" + playListId)
     .then(
       res => {
         // success
         console.log("success fetch playlist list");
         const payload = res.data;
+        this.setState({ isLoad: false })
         Actions.Preview({ shirtData: payload });
       }
     ).catch(
@@ -106,25 +107,30 @@ export default class TshirtsList extends Component {
    );
 
   render(){
+    const { isLoad } = this.state;
     return (
       <Container>
-        {/* <BGImage
-          source={require('../../img/shirts_bg.png')}
-        /> */}
-        <Carousel
-          data={this.state.playLists}
-          renderItem={this.renderItem}
-          itemWidth={Dimensions.get("window").width * 0.85}
-          sliderWidth={Dimensions.get("window").width}
-          slideStyle={{ flex: 1 }}
-          layout={'stack'}
-          loop
-        />
-        <View style={{ flex: 1 }}>
-          <StyledButton rounded>
-            <WhiteText>決定</WhiteText>
-          </StyledButton>
-        </View>
+        {
+          isLoad
+          ? <BGImage
+              source={require('../../img/main.gif')}
+            />
+          :
+          <View>
+            <BGImage
+              source={require('../../img/shirts_bg.png')}
+            />
+            <Carousel
+              data={this.state.playLists}
+              renderItem={this.renderItem}
+              itemWidth={Dimensions.get("window").width * 0.85}
+              sliderWidth={Dimensions.get("window").width}
+              slideStyle={{ flex: 1 }}
+              layout={'stack'}
+              loop
+            />
+          </View>
+        }
       </Container>
     );
   }
@@ -134,6 +140,7 @@ const Container = styled(View)`
   height: 812px;
   width: 375px;
   background-color: #15192D;
+  position: relative;
 `
 const ItemContainer = styled(TouchableOpacity)`
   margin: 200px auto;
@@ -149,9 +156,11 @@ const StyledButton = styled(Button)`
   background-color: #DA0023;
 `
 const BGImage = styled(Image)`
-  width: 200px;
-  height: 200px;
-  margin: 0 auto;
+  position: absolute;
+  align-self: center;
+  z-index: -1;
+  height: 812px;
+  width: 375px;
 `
 const WhiteText = styled(Text)`
   color: #fff;
