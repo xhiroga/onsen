@@ -20,7 +20,7 @@ export default class TshirtsList extends Component {
     this.state = {
       playLists: [],
       playListsErrors: "",
-      isLoad: false
+      isLoad: false,
       isOpenModal: false
     }
   }
