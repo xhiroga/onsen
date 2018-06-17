@@ -20,7 +20,7 @@ export default class TshirtsList extends Component {
     this.state = {
       playLists: [],
       playListsErrors: "",
-      isLoad: false
+      isLoad: false,
       isOpenModal: false
     }
   }
@@ -113,9 +113,13 @@ export default class TshirtsList extends Component {
       <Container>
         {
           isLoad
-          ? <BGImage
-              source={require('../../img/main.gif')}
-            />
+          ?
+            <View>
+              <BGImage
+                source={require('../../img/main.gif')}
+              />
+              <LoadingText>読み込み中</LoadingText>
+            </View>
           :
           <View>
             <BGImage
@@ -172,6 +176,13 @@ const WhiteText = styled(Text)`
   padding: 15px 30px;
   background-color: #DA0023;
   border-radius: 50px;
+`
+const LoadingText = styled(Text)`
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  height: 100%;
+  margin-top: 300px;
 `
 
 const styles = StyleSheet.create({
