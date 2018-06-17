@@ -19,7 +19,7 @@ var param = {
   "tsLlc": "https://s3.amazonaws.com/hiroga/onsen-tsgen/tshirts.png",
 }
 
-var token = 'BQBagGNnt88__1vF5RR-viSEWgvRdz3fngqJwPNhBpekYfnQUEDTSS8aGqWvBC_J2fP0l_RUyzkv3T8bKy0sgQXkk91T4vlDC11Z3P7Sa4j41dg1KgWVURh-SLu8fAxQ4flVUJXaDfPexJ3skU8Sl92CvJsSlqYEaIs'
+var token = 'BQA-OeTweyuSQpG3k5poB11J4K_ZXEkKeV5iL9K6NAhHOTxnMvCtqQ9TJFkZ6k5qA7Gww1XKZZtxl6VHifbVXk9DRZ9gw5Q_S2NiT2F8ci9PYTcFCSD7XuFsPtBIxBEFMna0e7B2jU24PdrGhoXMe4oKz8PfTrhHrAc'
 const AUTH_TOKEN = "Bearer " + token;
 
 var imgArt = "";
