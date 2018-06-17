@@ -34,11 +34,11 @@ export default class Preview extends Component {
         isOpenModal: !this.state.isOpenModal,
         modalTshirtUrl: res.products.url
       });
-      Actions.popTo('TshirtsList');
+      Actions.TshirtsList({type : 'reset' })
     })
     .catch(err => {
       console.log(err.request);
-      Actions.popTo('TshirtsList');
+      Actions.TshirtsList({type : 'reset' })
     })
   }
 
