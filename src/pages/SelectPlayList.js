@@ -128,6 +128,7 @@ export default class TshirtsList extends Component {
               slideStyle={{ flex: 1 }}
               layout={'stack'}
               loop
+              autoPlay
             />
           </View>
         }
@@ -137,13 +138,13 @@ export default class TshirtsList extends Component {
 }
 
 const Container = styled(View)`
-  height: 812px;
-  width: 375px;
+  height: 100%;
+  width: 100%;
   background-color: #15192D;
   position: relative;
 `
 const ItemContainer = styled(TouchableOpacity)`
-  margin: 200px auto;
+  margin: 170px auto;
   margin-left: 40px;
 `
 const MusicImage = styled(Image)`
@@ -156,11 +157,11 @@ const StyledButton = styled(Button)`
   background-color: #DA0023;
 `
 const BGImage = styled(Image)`
+  height: 100%;
+  width: 100%;
   position: absolute;
   align-self: center;
   z-index: -1;
-  height: 812px;
-  width: 375px;
 `
 const WhiteText = styled(Text)`
   color: #fff;
