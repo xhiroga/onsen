@@ -15,7 +15,8 @@ export default class TshirtsList extends Component {
     super();
     this.state = {
       playLists: [],
-      playListsErrors: ""
+      playListsErrors: "",
+      isOpenModal: false
     }
   }
 

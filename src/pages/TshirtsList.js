@@ -5,37 +5,25 @@ import {
   Image,
   View,
   ScrollView,
-  Alert
+  Alert,
+  TouchableHighlight,
+  ImageBackground
 } from 'react-native';
 import { Button, Text } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import Modal from 'react-native-modal';
 
 import { suzuriClient } from '../../utilities/apiClient';
-
-const styles = StyleSheet.create({
-  wrapper: {
-  },
-  slide1: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#9DD6EB',
-  },
-  slide2: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#97CAE5',
-  }
-})
-
 
 export default class TshirtsList extends Component {
   constructor() {
     super();
     this.state = {
       productsList: [],
-      productsErrors: ""
+      productsErrors: "",
+      isOpenModal: false,
+      modalTshirtUrl: "",
+      modalTshirtTitle: ""
     }
   }
 
@@ -94,24 +82,46 @@ export default class TshirtsList extends Component {
     })
   }
 
+  onPressShirt(url) {
+    this.setState({
+      isOpenModal: !this.state.isOpenModal,
+      modalTshirtUrl: url
+    });
+  }
+
   render(){
     return (
-      <ScrollView>
-      {this.state.productsList.map(product => (
-        <View
-          key={product.id}
-        >
+      <View style={{position: "relative"}}>
+        <ScrollView style={{backgroundColor: "#15192D"}}>
+            {this.state.productsList.map((product, index) => (
+              <View styles={{flexDirection: 'row', flex: 1}} key={index}>
+                <TouchableHighlight
+                  key={product.id}
+                  style={{alignItems: 'center'}}
+                  onPress={(product) => this.onPressShirt(product.sampleImageUrl.replace("jpg", "png"))}
+                >
+                  <Image
+                    style={{width: 200, height: 200}}
+                    source={{uri: product.sampleImageUrl.replace("jpg", "png")}}
+                  />
+                </TouchableHighlight>
+              </View>
+            ))}
+        </ScrollView>
+        <Button onPress={() => Actions.SelectPlayList()} style={{position: "absolute", bottom: 50, right: 40}}>
           <Image
-            style={{width: 100, height: 100}}
-            source={{uri: product.sampleImageUrl}}
+            style={{width: 50, height: 50, backgroundColor: "#15192D", }}
+            source={require('../../img/add_button.png')}
           />
-          <Text>{product.title}</Text>
-        </View>
-      ))}
-      <Button onPress={() => Actions.SelectPlayList()}>
-        <Text>プレイリストを選択</Text>
-      </Button>
-    </ScrollView>
+        </Button>
+
+        <Modal
+          isVisible={this.state.isOpenModal}
+          style={{alignItems: "center"}}
+        >
+          <Text>{"hoge"}</Text>
+        </Modal>
+      </View>
     );
   }
 }
