@@ -9,7 +9,6 @@ import Modal from 'react-native-modal';
 export default class Preview extends Component {
   constructor(props){
     super(props);
-    console.log(props.shirtData);
     this.state = {
       isArtbord: true,
       isOpenModal: false,
@@ -35,19 +34,11 @@ export default class Preview extends Component {
         isOpenModal: !this.state.isOpenModal,
         modalTshirtUrl: res.products.url
       });
+      Actions.popTo('TshirtsList');
     })
     .catch(err => {
       console.log(err.request);
-      Alert.alert(
-       'Error',
-       'Cannot register item',
-       [{
-         text: 'OK',
-         onPress: () => console.log('OK Pressed'),
-         style: 'default'
-       }],
-       { cancelable: false }
-      );
+      Actions.popTo('TshirtsList');
     })
   }
 
