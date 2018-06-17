@@ -118,7 +118,7 @@ export default class TshirtsList extends Component {
               <BGImage
                 source={require('../../img/main.gif')}
               />
-              <LoadingText>読み込み中</LoadingText>
+            <LoadingText>製作中・・・</LoadingText>
             </View>
           :
           <View>
@@ -162,8 +162,9 @@ const StyledButton = styled(Button)`
   background-color: #DA0023;
 `
 const BGImage = styled(Image)`
-  height: 100%;
-  width: 100%;
+  height: 350;
+  width: 350;
+  margin-top: 140;
   position: absolute;
   align-self: center;
   z-index: -1;

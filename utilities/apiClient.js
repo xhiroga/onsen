@@ -11,10 +11,10 @@ const SPOTIFY_AUTH = "Bearer " + SPOTIFY_TOKEN;
 // fot suzuri api instance
 const suzuriClient = axios.create({
   baseURL: 'https://suzuri.jp/api/v1',
-  timeout: 3000,
+  timeout: 10000,
   headers: {
     Authorization: SUZURI_AUTH,
-    ContentType: 'application/json'
+    'Content-Type': 'application/json'
   }
 });
 
