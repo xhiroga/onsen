@@ -30,7 +30,7 @@ describe('CloudinaryAPIクライアントは', function () {
         expect(stickerUrl).toMatch(/https:/);
     });
 
-    it('プレイリストのステッカーを作成していなければ', async function () {
+    it('プレイリストのステッカーを作成していなければブランクを返す', async function () {
         const stickerUrl = await api.getPlayListStickerUrl('1234567890');
         expect(stickerUrl).toBe('');
     });

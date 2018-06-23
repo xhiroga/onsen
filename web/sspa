@@ -2,7 +2,7 @@
 
 abspath="$(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}")"
 root_dir=`dirname "$abspath"`
-app_name=learnjs
+app_name=playlistStciker
 code_bucket=${app_name}/_code_bundles
 profile=admin
 

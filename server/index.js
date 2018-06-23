@@ -23,13 +23,16 @@ const cloudinaryApi = new CloudinaryApi()
 var imgArt = "";
 
 async function tsgen(req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
   const PLAYLIST_ID = req.query.pl
 
   await spotifyApi.setAccessToken();
   playlistData = await spotifyApi.getPlaylistData(PLAYLIST_ID);
-  const PLAYLIST_NAME = playlistData.name
   console.log('Playlist is...')
   console.log(playlistData)
+  const PLAYLIST_NAME = playlistData.name
 
 
   const stickerUrl = await cloudinaryApi.getPlayListStickerUrl(PLAYLIST_ID);
@@ -108,6 +111,11 @@ async function tsgen(req, res) {
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
+  .usr(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  })
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => {
