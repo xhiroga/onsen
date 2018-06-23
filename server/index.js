@@ -111,7 +111,7 @@ async function tsgen(req, res) {
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
-  .usr(function (req, res, next) {
+  .use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
