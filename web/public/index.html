@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <title>Learn JS!</title>
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css'>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css'>
+  <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
+  <script src='/vendor.js'></script>
+  <script src='/app.js'></script>
+  <style type="text/css" media="all">
+    body {
+      margin-top: 30px;
+      background-color: #232544;
+      ;
+    }
+
+    div {
+      color: #ffffff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="markup">
+    <div class="view-container container">
+      <div class="landing-view">
+        <div class="row">
+          <div class="one-half column">
+            <div class="">
+              <h4 class="hero-heading">Learn JavaScript, one puzzle at the time.</h4>
+            </div>
+            <div class="">
+              <h3 class="hero-heading">プレイリストのリンクをコピーして貼り付けて！</h3>
+              <input></input>
+              <a class="button button-primary">Start Now!</a>
+            </div>
+          </div>
+          <div class="one-half column">
+            <img class="phone" src="images/HeiseiSaigo-Natsu.png" width="400">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type='text/javascript'>
+    $(window).ready(learnjs.appOnReady);
+  </script>
+</body>
+
+</html>
