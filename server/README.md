@@ -16,6 +16,12 @@ $ npm install
 $ npm start
 ```
 
+## Herokuのセットアップ
+```
+$ $ heroku plugins:install heroku-config
+$ heroku config:push
+```
+
 ## Herokuにデプロイ
 
 ```
@@ -23,6 +29,5 @@ $ heroku create
 $ git push heroku master
 $ heroku open
 ```
-or
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)

@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
@@ -5,18 +6,17 @@ const async = require('async')
 const axios = require('axios')
 const cloudinary = require('cloudinary')
 const SpotifyApi = require('./common/SpotifyApi')
-const env = require('./config/env');
 
 
 cloudinary.config({
-  cloud_name: env.cloudinary_cloud_name,
-  api_key: env.cloudinary_api_key,
-  api_secret: env.cloudinary_api_secret
+  cloud_name: process.env.cloudinary_cloud_name,
+  api_key: process.env.cloudinary_api_key,
+  api_secret: process.env.cloudinary_api_secret
 });
 
 const spotifyApi = new SpotifyApi({
-  client_id: env.spotify_client_id,
-  client_secret: env.spotify_client_secret
+  client_id: process.env.spotify_client_id,
+  client_secret: process.env.spotify_client_secret
 });
 
 var imgArt = "";

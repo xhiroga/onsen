@@ -1,10 +1,13 @@
+require('dotenv').config()
 const SpotifyApi = require('../common/SpotifyApi');
-const env = require('../config/env');
+
 
 describe('SpotifyAPIクライアントは', function () {
+    console.log('process.env.spotify_client_id')
+    console.log(process.env.spotify_client_id)
     const api = new SpotifyApi({
-        client_id: env.spotify_client_id,
-        client_secret: env.spotify_client_secret
+        client_id: process.env.spotify_client_id,
+        client_secret: process.env.spotify_client_secret
     });
 
     it('Access Tokenをセットできる', async function () {
