@@ -1,8 +1,6 @@
+config/*
 tmp
 todo
-web-api-auth-examples
-upload.js
-ax.js
 
 # Node build artifacts
 node_modules
