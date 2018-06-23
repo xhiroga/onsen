@@ -6,7 +6,7 @@ const async = require('async')
 const axios = require('axios')
 const cloudinary = require('cloudinary')
 const SpotifyApi = require('./common/SpotifyApi')
-
+const CloudinaryApi = require('./common/CloudinaryApi')
 
 cloudinary.config({
   cloud_name: process.env.cloudinary_cloud_name,
@@ -18,19 +18,30 @@ const spotifyApi = new SpotifyApi({
   client_id: process.env.spotify_client_id,
   client_secret: process.env.spotify_client_secret
 });
+const cloudinaryApi = new CloudinaryApi()
 
 var imgArt = "";
-var imgTs = "";
-
 
 async function tsgen(req, res) {
+  const PLAYLIST_ID = req.query.pl
 
   await spotifyApi.setAccessToken();
-  playlistData = await spotifyApi.getPlaylistData('2X3SX875sosVFp58m8puKv');
+  playlistData = await spotifyApi.getPlaylistData(PLAYLIST_ID);
+  const PLAYLIST_NAME = playlistData.name
   console.log('Playlist is...')
   console.log(playlistData)
 
 
+  const stickerUrl = await cloudinaryApi.getPlayListStickerUrl(PLAYLIST_ID);
+  if ('' != stickerUrl) {
+    console.log('Sticker Detected!!!')
+    res.type('json')
+    res.json({
+      'title': PLAYLIST_NAME,
+      'imgArt': stickerUrl
+    })
+    return
+  }
   const calls = []
   const trackAry = playlistData.tracks.items
   const artAry = []
@@ -76,25 +87,21 @@ async function tsgen(req, res) {
     const art4 = 'l_' + privateIdAry[3] + ',w_420,h_420,g_north_west,y_420/'
     const art5 = 'l_' + privateIdAry[4] + ',w_420,h_420,g_north_west,x_420,y_420/'
     const art6 = 'l_' + privateIdAry[5] + ',w_420,h_420,g_north_west,x_840,y_420/'
-    const title = 'l_text:Sawarabi%20Mincho_160_center:' + playlistData.name + ',y_262/'
+    const title = 'l_text:Sawarabi%20Mincho_160_center:' + PLAYLIST_NAME + ',y_262/'
     const qr = 'l_' + privateIdAry[6] + ',w_1260,g_south/'
     const suf = 'template.png'
     const url = pre + art1 + art2 + art3 + art4 + art5 + art6 + title + qr + suf
 
     console.log(url)
     cloudinary.v2.uploader.upload(url,
+      { folder: 'stickers/', public_id: PLAYLIST_ID, tags: PLAYLIST_NAME },
       function (error, result) {
         imgArt = result.public_id
-        cloudinary.v2.uploader.upload('http://res.cloudinary.com/hdeoovqgo/image/upload/l_' + imgArt + ',w_600/ts.png',
-          function (error, result) {
-            tsArt = result.public_id
-            res.type('json')
-            res.json({
-              "title": playlistData.name,
-              "imgArt": 'http://res.cloudinary.com/hdeoovqgo/image/upload/' + imgArt + '.png',
-              "tsArt": 'http://res.cloudinary.com/hdeoovqgo/image/upload/' + tsArt + '.png',
-            })
-          });
+        res.type('json')
+        res.json({
+          "title": PLAYLIST_NAME,
+          "imgArt": 'http://res.cloudinary.com/hdeoovqgo/image/upload/' + imgArt + '.png'
+        })
       });
   });
 }
