@@ -38,7 +38,7 @@ module.exports = class SpotifyApi {
         if (this.accessToken == undefined) {
             throw "先にsetAccessToken()を実行して下さい."
         }
-        // console.log('this.accessToken:' + this.accessToken)
+        console.log('this.accessToken:' + this.accessToken)
         const playlistClient = axios.create({
             baseURL: 'https://api.spotify.com/v1',
             timeout: 1000,
@@ -57,7 +57,7 @@ module.exports = class SpotifyApi {
                 })
                 .catch(err => {
                     console.log(err)
-                    reject()
+                    resolve('') // 本当はrejectして500エラーを返すべきだと思うが、rejectとcatchの関係がよくわかっていないので省略
                 })
         })
     }

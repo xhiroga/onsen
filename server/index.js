@@ -30,10 +30,10 @@ async function tsgen(req, res) {
 
   await spotifyApi.setAccessToken();
   playlistData = await spotifyApi.getPlaylistData(PLAYLIST_ID);
+  if ('' == playlistData) { res.send('') }
   console.log('Playlist is...')
   console.log(playlistData)
   const PLAYLIST_NAME = playlistData.name
-
 
   const stickerUrl = await cloudinaryApi.getPlayListStickerUrl(PLAYLIST_ID);
   if ('' != stickerUrl) {
@@ -90,7 +90,7 @@ async function tsgen(req, res) {
     const art4 = 'l_' + privateIdAry[3] + ',w_420,h_420,g_north_west,y_420/'
     const art5 = 'l_' + privateIdAry[4] + ',w_420,h_420,g_north_west,x_420,y_420/'
     const art6 = 'l_' + privateIdAry[5] + ',w_420,h_420,g_north_west,x_840,y_420/'
-    const title = 'l_text:Sawarabi%20Mincho_160_center:' + PLAYLIST_NAME + ',y_262/'
+    const title = 'l_text:Sawarabi%20Mincho_100_center:' + PLAYLIST_NAME + ',y_262/'
     const qr = 'l_' + privateIdAry[6] + ',w_1260,g_south/'
     const suf = 'template.png'
     const url = pre + art1 + art2 + art3 + art4 + art5 + art6 + title + qr + suf

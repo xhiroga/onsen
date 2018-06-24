@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var playlistSticker = {};
+var playlistSticker = {}
 const webUrl = 'https://s3.amazonaws.com/playlist.sticker.io/index.html'
-const serverUrl = 'https://onsen-tsgen.herokuapp.com/tsgen?pl=';
-
+// const serverUrl = 'https://onsen-tsgen.herokuapp.com/tsgen?pl='
+const serverUrl = 'http://localhost:5000/tsgen?pl='
 
 playlistSticker.setPlaylist = function () {
     var PLAYLIST_URL = $('#playlist-url').val()
@@ -24,23 +24,36 @@ playlistSticker.setPlaylist = function () {
 }
 
 playlistSticker.findSticker = function (playlistId) {
-
     $.ajax({
         url: serverUrl + playlistId,
     })
         .done(res => {
             console.log(res)
+            if ('' == res) {
+                playlistSticker.noPlyalist()
+                return
+            }
             playlistSticker.stickerView(playlistId, res.imgArt)
         })
         .fail(err => {
-            console.log(err)
+            playlistSticker.noPlyalist()
         })
     playlistSticker.processingView()
 }
 
+// エラー処理
+playlistSticker.noPlyalist = function () {
+    alert('プレイリストを見つけられませんでした...')
+    window.location.hash = ''
+}
+
 //  DOMの切り替え
+playlistSticker.landingView = function () {
+    $('.showcase').empty().append('<img class="tshirts" src="images/HeiseiSaigo-Natsu.png" width="400">')
+}
+
 playlistSticker.processingView = function () {
-    $('.showcase').empty().append('<h1 class="processing">処理中・・・</h1>');
+    $('.showcase').empty().append('<h1 class="processing">処理中・・・</h1>')
 }
 
 playlistSticker.stickerView = function (playlistId, stickerUrl) {
@@ -55,17 +68,19 @@ playlistSticker.stickerView = function (playlistId, stickerUrl) {
 playlistSticker.showView = function (hash) {
     var routes = {
         '#sticker': playlistSticker.findSticker
-    };
-    var hashParts = hash.split('-');
-    var viewFn = routes[hashParts[0]];
+    }
+    var hashParts = hash.split('-')
+    var viewFn = routes[hashParts[0]]
     if (viewFn) {
-        viewFn(hashParts[1]);
+        viewFn(hashParts[1])
+    } else {
+        playlistSticker.landingView()
     }
 }
 
 playlistSticker.appOnReady = function () {
     window.onhashchange = function () {
-        playlistSticker.showView(window.location.hash);
+        playlistSticker.showView(window.location.hash)
     }
-    playlistSticker.showView(window.location.hash);
+    playlistSticker.showView(window.location.hash)
 }

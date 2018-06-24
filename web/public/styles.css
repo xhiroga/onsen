@@ -14,7 +14,7 @@ textarea {
   color: #ffffff;
 }
 .main{
-  height: 500px;
+  height: 450px;
 }
 .showcase {
 }
@@ -64,5 +64,9 @@ textarea {
   position: absolute !important;
 }
 .terms {
+  text-align: center;
+}
+.copy, .copy a {
+  color: #949b9c !important;
   text-align: center;
 }
