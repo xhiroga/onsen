@@ -3,48 +3,48 @@
 
 <head>
   <meta charset='utf-8'>
-  <title>Learn JS!</title>
+  <title>プレイリストをTシャツに。</title>
   <link href='https://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css'>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css'>
   <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
   <script src='./vendor.js'></script>
   <script src='./app.js'></script>
-  <style type="text/css" media="all">
-    body {
-      margin-top: 30px;
-      background-color: #232544;
-    }
-
-    div {
-      color: #ffffff;
-    }
-
-    input {
-      color: #232544;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
 <body>
   <div class="markup">
     <div class="view-container container">
-      <div class="landing-view">
-        <div class="row">
-          <div class="one-half column">
-            <div class="">
-              <h4 class="hero-heading">Learn JavaScript, one puzzle at the time.</h4>
-            </div>
-            <div class="">
-              <h3 class="hero-heading">プレイリストのリンクをコピーして貼り付けて！</h3>
-              <input id="playlist-url"></input>
-              <a class="button button-primary" onclick="playlistSticker.generateSticker()">Start Now!</a>
-            </div>
+      <div class="row">
+        <div class="one-half column">
+          <div class="row">
+            <h5 class="hero-heading">プレイリストをTシャツに。
+            </h5>
           </div>
-          <div class="one-half column">
-            <img class="phone" src="images/HeiseiSaigo-Natsu.png" width="400">
+          <div class="row">
+            <label>
+              <span class="label-body">SpotifyのPlaylistのURLをペーストして下さい</span>
+            </label>
+            <textarea id="playlist-url" class="u-full-width" placeholder="https://open.spotify.com/user/22ecqm7j2prqqwr5m4ghiseqi/playlist/2X3SX875sosVFp58m8puKv?si=CxhZCBj9Q12OZwFc8q8asA"></textarea>
+          </div>
+          <div class="row">
+            <a class="button success" onclick="playlistSticker.setPlaylist()">Start Now!</a>
           </div>
         </div>
+        <div class="one-half column main">
+          <img class="circle" src="images/circle.png" width="400">
+          <div class="showcase">
+            <img class="tshirts" src="images/HeiseiSaigo-Natsu.png" width="400">
+          </div>
+        </div>
+      </div>
+      <div class="row terms">
+        <h6>
+          利用にあたって:
+          <br> * これはプレイリストからデザインを作るアプリです。Tシャツ屋さんには自分で入稿しましょう。
+          <br> * 作成したデザインは私的な範囲で利用しましょう。
+        </h6>
       </div>
     </div>
   </div>

@@ -1,10 +1,10 @@
 describe('PlaylistStickerは', function () {
-    it('プレイリストのURLを渡されたらステッカー生成のリクエストを送る', function () {
+    it('プレイリストのURLを渡されたら画面を処理中に差し替える', function () {
 
 
     })
 
-    it('ステッカーの生成が完了したらステッカーを表示する', function () {
+    it('ステッカーのURLが返ってきたらステッカーを表示する', function () {
         playlistSticker.showView('#playlist-2X3SX875sosVFp58m8puKv');
         expect($('.view-container .sticker-view').length).toEqual(1);
     })

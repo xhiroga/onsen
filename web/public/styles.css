@@ -1,0 +1,68 @@
+body {
+  margin-top: 8rem;
+  background-color: #232544;
+}
+div {
+  color: #ffffff;
+    }
+textarea {
+  color: #232544;
+}
+.success{
+  background-color: #27ae60;
+  border-width: 0px;
+  color: #ffffff;
+}
+.main{
+  height: 500px;
+}
+.showcase {
+}
+.processing {
+  margin-top: 166px;
+  margin-left: 66px;
+  position: absolute;
+  text-align: center;
+  white-space: nowrap;
+  -webkit-animation:blink 3s ease-in-out infinite alternate;
+  -moz-animation:blink 3s ease-in-out infinite alternate;
+  animation:blink 3s ease-in-out infinite alternate;
+}
+@keyframes blink {
+  0% {opacity:0.1;}
+  100% {opacity:1;}
+}
+.sticker{
+  margin-top: 90px;
+  margin-left: 115px;
+  width: 175px;
+  animation:tshirts 3s alternate ease-in-out infinite;
+  position: absolute;
+  transform: rotate(45deg);
+  will-change:transform;
+  -webkit-user-select:none;user-select:none;
+}
+.tshirts{
+    animation:tshirts 3s alternate ease-in-out infinite;
+    position: absolute;
+    transform: rotate(45deg);
+    will-change:transform;
+    -webkit-user-select:none;user-select:none;
+}
+@keyframes tshirts{
+    0%{transform:translateY(-8px)rotate(3deg)}
+    100%{transform:translateY(8px)rotate(4deg)}
+}
+.circle{
+  animation:circle 6s alternate ease-in-out infinite;
+  position: absolute;
+}
+@keyframes circle{
+  100%{transform:rotate(1turn)}
+}
+.twitter-share-button{
+  position: absolute !important;
+}
+.terms {
+  text-align: center;
+}

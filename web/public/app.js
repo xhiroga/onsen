@@ -1,47 +1,71 @@
 'use strict';
 
 var playlistSticker = {};
-const baseUrl = 'https://onsen-tsgen.herokuapp.com/tsgen?pl=';
+const webUrl = 'https://s3.amazonaws.com/playlist.sticker.io/index.html'
+const serverUrl = 'https://onsen-tsgen.herokuapp.com/tsgen?pl=';
 
-playlistSticker.generateSticker = function () {
+
+playlistSticker.setPlaylist = function () {
     var PLAYLIST_URL = $('#playlist-url').val()
     if ('' == PLAYLIST_URL) {
-        alert('プレイリストのURLがブランクです');
+        alert('プレイリストのURLがブランクです。')
         return
     }
-    console.log(PLAYLIST_URL)
-    var PLAYLIST_ID = PLAYLIST_URL;
+
+    const reg = /playlist\/([^?]*)/
+    var regResult = reg.exec(PLAYLIST_URL)
+    if (null == regResult) {
+        alert('プレイリストのIDを見つけられませんでした。\nURLの形式が間違っているかもしれません...')
+        return
+    }
+
+    var PLAYLIST_ID = regResult[1]
+    window.location.hash = 'sticker-' + PLAYLIST_ID
+}
+
+playlistSticker.findSticker = function (playlistId) {
 
     $.ajax({
-        url: baseUrl + PLAYLIST_ID,
+        url: serverUrl + playlistId,
     })
-        //
         .done(res => {
             console.log(res)
+            playlistSticker.stickerView(playlistId, res.imgArt)
         })
         .fail(err => {
             console.log(err)
         })
+    playlistSticker.processingView()
 }
 
-playlistSticker.landingView = function () { }
-
-playlistSticker.stickerView = function (problemNumber) {
-    var title = 'Problem #' + problemNumber + ' Coming soon!'
-    return $('<div class="problem-view">').text(title);
+//  DOMの切り替え
+playlistSticker.processingView = function () {
+    $('.showcase').empty().append('<h1 class="processing">処理中・・・</h1>');
 }
+
+playlistSticker.stickerView = function (playlistId, stickerUrl) {
+    $('.showcase').empty().append(
+        '<img class="tshirts" src="images/ts-blank.png" width="400">' +
+        '<a href="' + stickerUrl + '"><img class="sticker" src="' + stickerUrl + '"></a>' +
+        '<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="好きなプレイリストをTシャツにしました。" data-url="' + webUrl + '#sticker-' + playlistId + '" data-hashtags="プレイリストTシャツ" data-lang="ja" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+    );
+}
+
+// ルーティング
 playlistSticker.showView = function (hash) {
-    // ハッシュとルート関数の対応関係を持つオブジェクトをroutesオブジェクトとする
     var routes = {
-        '#sticker': playlistSticker.stickerView
+        '#sticker': playlistSticker.findSticker
     };
     var hashParts = hash.split('-');
     var viewFn = routes[hashParts[0]];
     if (viewFn) {
-        $('.view-container').empty().append(viewFn(hashParts[1]));
+        viewFn(hashParts[1]);
     }
 }
 
 playlistSticker.appOnReady = function () {
+    window.onhashchange = function () {
+        playlistSticker.showView(window.location.hash);
+    }
     playlistSticker.showView(window.location.hash);
 }
