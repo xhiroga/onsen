@@ -2,8 +2,7 @@
 
 var playlistSticker = {}
 const webUrl = 'https://s3.amazonaws.com/playlist.sticker.io/index.html'
-// const serverUrl = 'https://onsen-tsgen.herokuapp.com/tsgen?pl='
-const serverUrl = 'http://localhost:5000/tsgen?pl='
+const serverUrl = 'https://onsen-tsgen.herokuapp.com/tsgen?pl='
 
 playlistSticker.setPlaylist = function () {
     var PLAYLIST_URL = $('#playlist-url').val()
