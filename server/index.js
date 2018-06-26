@@ -38,11 +38,19 @@ async function tsgen(req, res) {
   const stickerUrl = await cloudinaryApi.getPlayListStickerUrl(PLAYLIST_ID);
   if ('' != stickerUrl) {
     console.log('Sticker Detected!!!')
-    res.type('json')
-    res.json({
-      'title': PLAYLIST_NAME,
-      'imgArt': stickerUrl
-    })
+    cloudinary.v2.uploader.upload('http://res.cloudinary.com/hdeoovqgo/image/upload/l_' + PLAYLIST_ID + ',w_600/ts.png',
+      function (error, result) {
+        tsArt = result.public_id
+        res.type('json')
+        res.json({
+          "title": PLAYLIST_NAME,
+          "imgArt": stickerUrl,
+          "tsArt": 'http://res.cloudinary.com/hdeoovqgo/image/upload/' + tsArt + '.png',
+          "imgLlc": "https://s3.amazonaws.com/hiroga/onsen-tsgen/plimg.png",
+          "tsLlc": "https://s3.amazonaws.com/hiroga/onsen-tsgen/tshirts.png",
+        })
+      });
+
     return
   }
   const calls = []
