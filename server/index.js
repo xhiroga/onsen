@@ -100,11 +100,18 @@ async function tsgen(req, res) {
       { folder: 'stickers/', public_id: PLAYLIST_ID, tags: PLAYLIST_NAME },
       function (error, result) {
         imgArt = result.public_id
-        res.type('json')
-        res.json({
-          "title": PLAYLIST_NAME,
-          "imgArt": 'http://res.cloudinary.com/hdeoovqgo/image/upload/' + imgArt + '.png'
-        })
+        cloudinary.v2.uploader.upload('http://res.cloudinary.com/hdeoovqgo/image/upload/l_' + imgArt + ',w_600/ts.png',
+          function (error, result) {
+            tsArt = result.public_id
+            res.type('json')
+            res.json({
+              "title": response.data.name,
+              "imgArt": 'http://res.cloudinary.com/hdeoovqgo/image/upload/' + imgArt + '.png',
+              "tsArt": 'http://res.cloudinary.com/hdeoovqgo/image/upload/' + tsArt + '.png',
+              "imgLlc": "https://s3.amazonaws.com/hiroga/onsen-tsgen/plimg.png",
+              "tsLlc": "https://s3.amazonaws.com/hiroga/onsen-tsgen/tshirts.png",
+            })
+          });
       });
   });
 }
