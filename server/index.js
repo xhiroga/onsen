@@ -124,4 +124,9 @@ express()
   .get('/tsgen', (req, res) => {
     tsgen(req, res)
   })
+  // Spotifyのログイン認証にはWhit-listに載せたアプリのリンクを渡す必要がある。しかし、Expoの特性上、開発中はアプリのリンクが一意に定まらない。
+  // したがって一度サーバーを経由させる。
+  .get('/callback', (req, res) => {
+    res.redirect(req.query.state + '?code=' + req.query.code)
+  })
   .listen(PORT, () => console.log(`Listening on ${PORT}`))
