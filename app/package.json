@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "buffer": "^5.1.0",
     "expo": "^27.0.1",
     "native-base": "^2.5.2",
     "querystring": "^0.2.0",

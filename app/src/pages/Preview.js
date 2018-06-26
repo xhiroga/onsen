@@ -7,7 +7,7 @@ import { suzuriClient } from '../../utilities/apiClient';
 import Modal from 'react-native-modal';
 
 export default class Preview extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       isArtbord: true,
@@ -23,35 +23,36 @@ export default class Preview extends Component {
     suzuriClient.post("/materials", {
       texture: shirtData.imgArt,
       title: shirtData.title,
-      products : [{
-        itemId : 1,
-        published : true,
-        resizeMode : "contain"
+      products: [{
+        itemId: 1,
+        published: true,
+        resizeMode: "contain"
       }]
     })
-    .then(res => {
-      this.setState({
-        isOpenModal: !this.state.isOpenModal,
-        modalTshirtUrl: res.products.url
-      });
-      Actions.TshirtsList({type : 'reset' })
-    })
-    .catch(err => {
-      console.log(err.request);
-      Actions.TshirtsList({type : 'reset' })
-    })
+      .then(res => {
+        this.setState({
+          isOpenModal: !this.state.isOpenModal,
+          modalTshirtUrl: res.products.url
+        });
+        Actions.TshirtsList({ type: 'reset' })
+      })
+      .catch(err => {
+        console.log(err.request);
+        Actions.TshirtsList({ type: 'reset' })
+      })
   }
 
   render() {
     const { shirtData } = this.props;
+    console.log('shirtData', shirtData)
     const { isArtbord, isOpenModal } = this.state;
     return (
       <Container>
         <WhiteText style={{ fontSize: 20 }}>「{shirtData.title}」Tシャツ</WhiteText>
         {
           isArtbord
-          ? <Tshirt source={{ uri: shirtData.tsArt }} />
-          : <Tshirt source={{ uri: shirtData.tsLlc }} />
+            ? <Tshirt source={{ uri: shirtData.tsArt }} />
+            : <Tshirt source={{ uri: shirtData.tsLlc }} />
         }
         <ButtonWrapper>
           <StyledButton onPress={() => this.registerItem()}>
@@ -63,7 +64,7 @@ export default class Preview extends Component {
         </ButtonWrapper>
         <Modal
           isVisible={isOpenModal}
-          style={{alignItems: "center"}}
+          style={{ alignItems: "center" }}
         >
           <StyledButton onPress={() => Linking.openURL(modalTshirtUrl)}>
             <WhiteText>購入ページに飛ぶ</WhiteText>

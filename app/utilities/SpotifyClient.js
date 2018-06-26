@@ -1,5 +1,7 @@
 import axios from 'axios';
+import { Buffer } from 'buffer';
 import querystring from 'querystring';
+import { TOKEN_REQUEST_REDIRECT_URL } from "../config/env";
 
 class SpotifyClient {
 
@@ -10,7 +12,11 @@ class SpotifyClient {
         console.log("client_secret: " + this.client_secret);
     }
 
-    async setAccessToken() {
+    // 動作確認用
+    getClient_id() { return this.client_id }
+
+    async setAccessRefreshToken(code) {
+        console.log('setAccessRefreshToken(code)')
         const accessTokenBuffer = new Buffer.from(this.client_id + ':' + this.client_secret);
         const accessTokenClient = axios.create({
             baseURL: 'https://accounts.spotify.com/api/token',
@@ -21,10 +27,10 @@ class SpotifyClient {
         })
 
         return new Promise((resolve, reject) => {
-            accessTokenClient.post('', querystring.stringify({ grant_type: 'client_credentials' }))
+            accessTokenClient.post('', querystring.stringify({ grant_type: 'authorization_code', code: code, redirect_uri: TOKEN_REQUEST_REDIRECT_URL }))
                 .then(res => {
-                    // console.log(res.data.access_token)
                     this.accessToken = res.data.access_token
+                    this.refreshToken = res.data.refresh_token
                     resolve()
                 })
                 .catch(err => {
@@ -34,12 +40,12 @@ class SpotifyClient {
         })
     }
 
-    async getPlaylistData(playlistId) {
-        if (this.accessToken == undefined) {
-            throw "先にsetAccessToken()を実行して下さい."
-        }
+    async getMyPlaylists() {
         console.log('this.accessToken:' + this.accessToken)
-        const playlistClient = axios.create({
+        if (this.accessToken == undefined) {
+            throw "先にsetAccessRefreshToken(code)を実行して下さい."
+        }
+        const playlistsClient = axios.create({
             baseURL: 'https://api.spotify.com/v1',
             timeout: 1000,
             headers: {
@@ -47,19 +53,20 @@ class SpotifyClient {
                 ContentType: 'application/json'
             }
         })
-
         return new Promise((resolve, reject) => {
 
-            playlistClient.get('users/spotify/playlists/' + playlistId + '/?market=JP')
+            playlistsClient.get('me/playlists')
                 .then(res => {
-                    // console.log(res.data)
-                    resolve(res.data)
+                    console.log(res.data.items)
+                    resolve(res.data.items)
                 })
                 .catch(err => {
                     console.log(err)
                     resolve('') // 本当はrejectして500エラーを返すべきだと思うが、rejectとcatchの関係がよくわかっていないので省略
                 })
         })
+
+
     }
 };
 

@@ -13,6 +13,7 @@ import { Actions } from 'react-native-router-flux';
 import styled from 'styled-components';
 import Carousel from 'react-native-snap-carousel';
 import { spotifyClient, apiClient } from '../../utilities/apiClient';
+import SpotifyClient from '../../utilities/SpotifyClient';
 
 export default class TshirtsList extends Component {
   constructor() {
@@ -25,117 +26,90 @@ export default class TshirtsList extends Component {
     }
   }
 
-  componentDidMount() {
-    spotifyClient.get("/me/playlists")
-    .then(
-      res => {
-        if(res.status === 200) {
+  async _getMyPlaylists() {
+    // 本当はtokenのrefreshをAPI使用の度に挟みたい。
+    const playlists = await this.props.spotifyClient.getMyPlaylists();
+    // console.log(playlists)
 
-          // success
-
-          console.log("success fetch playlist list");
-
-          const payload = res.data.items;
-
-          this.setState({
-            playLists: payload
-          });
-
-        } else {
-
-          // fail
-
-          Alert.alert(
-            'Error',
-            'Cannot fetch spotify playLists',
-            [
-              {text: 'OK', onPress: () => console.log('OK Pressed'), style: 'default'},
-            ],
-            { cancelable: false }
-          );
-
-          this.setState({
-            playListsErrors: "cannot fetch platyLists."
-          });
-
-        }
-      }
-    )
-    .catch(err => {
-
-      // fail
-
+    if ('' == playlists) {
       Alert.alert(
-            'Error',
-            'Cannot fetch spotify playLists',
-            [
-              {text: 'OK', onPress: () => console.log('OK Pressed'), style: 'default'},
-            ],
-            { cancelable: false }
-          );
-
+        'Error', 'Cannot fetch spotify playLists',
+        [
+          { text: 'OK', onPress: () => console.log('OK Pressed'), style: 'default' },
+        ],
+        { cancelable: false }
+      );
       this.setState({
-        playListsErrors: err
+        playListsErrors: "cannot fetch platyLists."
       });
+      return
+    }
 
-    })
+    this.setState({
+      playLists: playlists
+    });
+  }
+
+  componentDidMount() {
+    this._getMyPlaylists()
   }
 
   onPress(playListId) {
+    console.log("Tシャツ作成中", playListId)
     this.setState({ isLoad: true })
     apiClient.get("/tsgen?pl=" + playListId)
-    .then(
-      res => {
-        // success
-        console.log("success fetch playlist list");
-        const payload = res.data;
-        this.setState({ isLoad: false })
-        Actions.Preview({ shirtData: payload });
-      }
-    ).catch(
-      err => { console.log(err) }
-    )
+      .then(
+        res => {
+          // success
+          console.log("success fetch playlist list");
+          const payload = res.data;
+          this.setState({ isLoad: false })
+          Actions.Preview({ shirtData: payload });
+        }
+      ).catch(
+        err => { console.log(err) }
+      )
   }
 
-   renderItem = ({ item }) => (
-     <ItemContainer
-       key={item.id}
-       onPress={() => {this.onPress(item.id)}}
-      >
-       <MusicImage source={{uri: item.images[0].url}} />
-       <WhiteText>{item.name}</WhiteText>
-     </ItemContainer>
-   );
+  renderItem = ({ item }) => (
+    <ItemContainer
+      key={item.id}
+      onPress={() => { this.onPress(item.id) }}
+    >
+      <MusicImage source={{ uri: item.images[0].url }} />
+      <WhiteText>{item.name}</WhiteText>
+    </ItemContainer>
+  );
 
-  render(){
+  render() {
     const { isLoad } = this.state;
     return (
       <Container>
         {
           isLoad
-          ?
+            ?
             <View>
               <BGImage
                 source={require('../../img/main.gif')}
               />
-            <LoadingText>製作中・・・</LoadingText>
+              <LoadingText>製作中・・・</LoadingText>
             </View>
-          :
-          <View>
-            <BGImage
-              source={require('../../img/shirts_bg.png')}
-            />
-            <Carousel
-              data={this.state.playLists}
-              renderItem={this.renderItem}
-              itemWidth={Dimensions.get("window").width * 0.85}
-              sliderWidth={Dimensions.get("window").width}
-              slideStyle={{ flex: 1 }}
-              layout={'stack'}
-              loop
-              autoPlay
-            />
-          </View>
+            :
+            <View>
+              <BGImage
+                source={require('../../img/shirts_bg.png')}
+              />
+              <Carousel
+                data={this.state.playLists}
+                renderItem={this.renderItem}
+                itemWidth={Dimensions.get("window").width * 0.85}
+                sliderWidth={Dimensions.get("window").width}
+                slideStyle={{ flex: 1 }}
+                layout={'stack'}
+                loop
+                autoPlay
+              />
+            </View>
         }
       </Container>
     );
