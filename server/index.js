@@ -105,7 +105,7 @@ async function tsgen(req, res) {
             tsArt = result.public_id
             res.type('json')
             res.json({
-              "title": response.data.name,
+              "title": PLAYLIST_NAME,
               "imgArt": 'http://res.cloudinary.com/hdeoovqgo/image/upload/' + imgArt + '.png',
               "tsArt": 'http://res.cloudinary.com/hdeoovqgo/image/upload/' + tsArt + '.png',
               "imgLlc": "https://s3.amazonaws.com/hiroga/onsen-tsgen/plimg.png",
