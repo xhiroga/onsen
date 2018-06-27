@@ -38,8 +38,9 @@ async function tsgen(req, res) {
   const stickerUrl = await cloudinaryApi.getPlayListStickerUrl(PLAYLIST_ID);
   if ('' != stickerUrl) {
     console.log('Sticker Detected!!!')
-    cloudinary.v2.uploader.upload('http://res.cloudinary.com/hdeoovqgo/image/upload/l_' + PLAYLIST_ID + ',w_600/ts.png',
+    cloudinary.v2.uploader.upload('http://res.cloudinary.com/hdeoovqgo/image/upload/l_stickers:' + PLAYLIST_ID + ',w_600/ts.png',
       function (error, result) {
+        console.log(error)
         tsArt = result.public_id
         res.type('json')
         res.json({
@@ -89,6 +90,7 @@ async function tsgen(req, res) {
       return console.log(err);
     }
     for (let el of result) { privateIdAry.push(el.public_id) }
+    if (undefined == privateIdAry[6]) { res.send('６曲以上のプレイリストを使ってください'); return }
     console.log(privateIdAry)
 
     const pre = 'http://res.cloudinary.com/hdeoovqgo/image/upload/'
@@ -108,7 +110,8 @@ async function tsgen(req, res) {
       { folder: 'stickers/', public_id: PLAYLIST_ID, tags: PLAYLIST_NAME },
       function (error, result) {
         imgArt = result.public_id
-        cloudinary.v2.uploader.upload('http://res.cloudinary.com/hdeoovqgo/image/upload/l_' + imgArt + ',w_600/ts.png',
+        console.log('imgArt:', imgArt)
+        cloudinary.v2.uploader.upload('http://res.cloudinary.com/hdeoovqgo/image/upload/l_' + imgArt.replace('/', ':') + ',w_600/ts.png',
           function (error, result) {
             tsArt = result.public_id
             res.type('json')
